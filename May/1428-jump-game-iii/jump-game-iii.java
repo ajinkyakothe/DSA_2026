@@ -1,32 +1,28 @@
 class Solution {
-    public boolean canReach(int[] arr, int start) {
-        
-      int n=arr.length;
 
-      boolean [] visited=new boolean[n];
+    public boolean solve(int arr[], int curr, int n, boolean visited[]) {
 
-      Queue<Integer> q=new ArrayDeque<>();
-
-      q.offer(start);
-
-      while(!q.isEmpty()) 
-      {
-        int i=q.poll();
-
-        if(i<0 || i>=n || visited[i])
-        {
-            continue;
+        if (curr < 0 || curr >= n || visited[curr]) {
+            return false;
         }
 
-        if(arr[i]==0) return true;
+        if (arr[curr] == 0) {
+            return true;
+        }
 
-        visited[i]=true;
+        visited[curr] = true;
 
-        q.offer(i+arr[i]);
-        q.offer(i-arr[i]);
-      }   
-            
-        return false;     
-              
+        boolean left = solve(arr, curr - arr[curr], n, visited);
+        boolean right = solve(arr, curr + arr[curr], n, visited);
+
+        return left || right;
+    }
+
+    public boolean canReach(int[] arr, int start) {
+
+        int n = arr.length;
+        boolean visited[] = new boolean[n];
+
+        return solve(arr, start, n, visited);
     }
 }
